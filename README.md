@@ -1,4 +1,4 @@
-# 👶 نظام استخراج شهادات الميلاد الإلكتروني (PWA)
+# موقع تقديم طلب استخراج شهادات الميلاد الإلكتروني (PWA)
 ### Online Birth Certificate Issuance System - Progressive Web App
 
 <p align="center">
@@ -63,15 +63,16 @@ birth_certificate_pwa/
 ---
 ## التثبيت والتشغيل محلياً (Local Setup)
 1. استنساخ المشروع:
+Bash
 git clone [https://github.com/harunbabekr/birth-certificate-pwa.git](https://github.com/harunbabekr/birth-certificate-pwa.git)
 cd birth-certificate-pwa
-
 2. إعداد وتشغيل خادم الباك إند (Backend):
-
+Bash
 cd backend
 npm install
 أنشئ ملف .env داخل مجلد backend وأضف المتغيرات التالية:
 
+مقتطف الرمز
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/birth_db
 JWT_SECRET=your_super_secret_jwt_key
@@ -79,15 +80,12 @@ BREVO_API_KEY=your_brevo_api_key
 BREVO_SENDER_EMAIL=your_email@domain.com
 BREVO_SENDER_NAME="السجل المدني"
 NODE_ENV=development
-
 تشغيل السيرفر:
 
-
+Bash
 npm run dev
-
-
 3. إعداد وتشغيل تطبيق الفرونت إند (Frontend):
-
+Bash
 cd ../client
 npm install
 npm run dev
