@@ -62,7 +62,7 @@ birth_certificate_pwa/
 
 ---
 ## التثبيت والتشغيل محلياً (Local Setup)
-*1. استنساخ المشروع:
+1. استنساخ المشروع:
 Bash
 git clone [https://github.com/harunbabekr/birth-certificate-pwa.git](https://github.com/harunbabekr/birth-certificate-pwa.git)
 cd birth-certificate-pwa
