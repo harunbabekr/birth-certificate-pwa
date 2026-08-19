@@ -60,7 +60,7 @@ birth_certificate_pwa/
 │
 └── README.md
 
----
+
 ## التثبيت والتشغيل محلياً (Local Setup)
 1. استنساخ المشروع:
 Bash
