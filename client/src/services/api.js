@@ -1,4 +1,16 @@
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/$/, "");
+// قراءة الرابط مع فحص الاسمين المحتملين وضمان عدم وجود شرطة مائلة في النهاية
+const rawUrl =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://birth-cert-backend.onrender.com/api";
+
+const API_URL = rawUrl.replace(/\/$/, "");
+
+// دالة مساعدة لضمان دمج الرابط والمسار الفرعي بفاصل مائل سليم دائماً
+function buildUrl(endpoint) {
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  return `${API_URL}${cleanEndpoint}`;
+}
 
 function safeParseJSON(value, fallback = null) {
   try {
@@ -12,7 +24,7 @@ function authHeaders(extra = {}) {
   const token = localStorage.getItem("token");
   return {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...extra
+    ...extra,
   };
 }
 
@@ -89,11 +101,17 @@ async function handleResponse(res) {
 
 const api = {
   async get(url) {
-    const res = await fetch(API_URL + url, { headers: authHeaders() });
+    const res = await fetch(buildUrl(url), {
+      headers: authHeaders(),
+      credentials: "include",
+    });
     return handleResponse(res);
   },
   async getBlob(url) {
-    const res = await fetch(API_URL + url, { headers: authHeaders() });
+    const res = await fetch(buildUrl(url), {
+      headers: authHeaders(),
+      credentials: "include",
+    });
     if (!res.ok) {
       if (res.status === 401) clearStoredAuth();
       const err = await res.json().catch(() => ({ message: `HTTP ${res.status}` }));
@@ -102,36 +120,40 @@ const api = {
     return res.blob();
   },
   async post(url, body) {
-    const res = await fetch(API_URL + url, {
+    const res = await fetch(buildUrl(url), {
       method: "POST",
       headers: authHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify(body ?? {})
+      credentials: "include",
+      body: JSON.stringify(body ?? {}),
     });
     return handleResponse(res);
   },
   async postForm(url, formData) {
-    const res = await fetch(API_URL + url, {
+    const res = await fetch(buildUrl(url), {
       method: "POST",
       headers: authHeaders(),
-      body: formData
+      credentials: "include",
+      body: formData,
     });
     return handleResponse(res);
   },
   async put(url, body) {
-    const res = await fetch(API_URL + url, {
+    const res = await fetch(buildUrl(url), {
       method: "PUT",
       headers: authHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify(body ?? {})
+      credentials: "include",
+      body: JSON.stringify(body ?? {}),
     });
     return handleResponse(res);
   },
   async delete(url) {
-    const res = await fetch(API_URL + url, {
+    const res = await fetch(buildUrl(url), {
       method: "DELETE",
-      headers: authHeaders()
+      headers: authHeaders(),
+      credentials: "include",
     });
     return handleResponse(res);
-  }
+  },
 };
 
 export { API_URL, buildRequestFormData, clearStoredAuth, getStoredUser, safeParseJSON, setStoredAuth };
