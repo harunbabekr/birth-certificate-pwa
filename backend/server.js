@@ -30,12 +30,17 @@ app.use(
     origin(origin, callback) {
       // السماح بالطلبات التي ليس لها origin (مثل تطبيقات الـ PWA المثبتة أو Postman أو طلبات السيرفر الداخلية)
       if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.includes(origin) || !isProduction) {
+
+      // السماح إذا كان الرابط في القائمة أو ينتهي بنطاق vercel.app أو في وضع التطوير
+      const isVercelDomain = origin.endsWith(".vercel.app");
+      const isAllowed = allowedOrigins.includes(origin) || isVercelDomain || !isProduction;
+
+      if (isAllowed) {
         return callback(null, true);
       }
-      
-      return callback(new Error("CORS blocked for this origin"));
+
+      // تمرير false بدلاً من رمي خطأ يوقف السيرفر
+      return callback(null, false);
     },
     credentials: true,
   })
