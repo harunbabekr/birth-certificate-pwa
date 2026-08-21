@@ -103,14 +103,12 @@ const api = {
   async get(url) {
     const res = await fetch(buildUrl(url), {
       headers: authHeaders(),
-      credentials: "include",
     });
     return handleResponse(res);
   },
   async getBlob(url) {
     const res = await fetch(buildUrl(url), {
       headers: authHeaders(),
-      credentials: "include",
     });
     if (!res.ok) {
       if (res.status === 401) clearStoredAuth();
@@ -123,7 +121,6 @@ const api = {
     const res = await fetch(buildUrl(url), {
       method: "POST",
       headers: authHeaders({ "Content-Type": "application/json" }),
-      credentials: "include",
       body: JSON.stringify(body ?? {}),
     });
     return handleResponse(res);
@@ -132,7 +129,6 @@ const api = {
     const res = await fetch(buildUrl(url), {
       method: "POST",
       headers: authHeaders(),
-      credentials: "include",
       body: formData,
     });
     return handleResponse(res);
@@ -141,7 +137,6 @@ const api = {
     const res = await fetch(buildUrl(url), {
       method: "PUT",
       headers: authHeaders({ "Content-Type": "application/json" }),
-      credentials: "include",
       body: JSON.stringify(body ?? {}),
     });
     return handleResponse(res);
@@ -150,7 +145,6 @@ const api = {
     const res = await fetch(buildUrl(url), {
       method: "DELETE",
       headers: authHeaders(),
-      credentials: "include",
     });
     return handleResponse(res);
   },
